@@ -3,6 +3,7 @@
 // Core dependencies
 var fs = require('fs');
 var path = require('path');
+var _ = require('lodash');
 
 // NPM dependencies
 var detectIndent = require('detect-indent');
@@ -10,6 +11,7 @@ var sortJson = require('./');
 
 // Get all the files
 var files = process.argv.slice(2);
+var ignoreCase = _.includes(process.argv, '--ignore-case') || _.includes(process.argv, '-i');
 
 files.forEach(readEachFile);
 
@@ -37,7 +39,7 @@ function readEachFile(fileName) {
     }
 
     // Sorting
-    var sortedObject = sortJson(json);
+    var sortedObject = sortJson(json, ignoreCase);
 
     // Saving to file
     fs.writeFile(filePath, JSON.stringify(sortedObject, null, indent) + ((eol && eol.length === 2) ? eol[1] : ''), function(err) {
