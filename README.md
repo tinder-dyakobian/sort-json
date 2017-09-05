@@ -25,6 +25,7 @@ CLI usage
 `sort-json file.json`
 
 Add `-i` or `--ignore-case` to ignore case when sorting.
+Add `-r` or `--reverse` to reverse order z -> a
 
 tests
 -----
