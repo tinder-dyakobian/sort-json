@@ -1,4 +1,17 @@
+var fs = require('fs');
+
 function visit(old, options) {
+    // overwrite file if first arg is array of paths
+    if (Array.isArray(old)) {
+        return old.map(function(p) {
+          var newJson = JSON.stringify(visit(require(p), options), null, 2);
+          // append new line at EOF
+          var data = newJson[newJson.length - 1] === '\n' ? newJson : newJson + '\n';
+          fs.writeFile(p, data, 'utf8');
+          return newJson;
+        });
+    }
+
     options = options || {};
     var ignoreCase = options.ignoreCase;
     var reverse = options.reverse;
@@ -20,6 +33,7 @@ function visit(old, options) {
     keys.forEach(function(key) {
         copy[key] = visit(old[key], options);
     });
+
     return copy;
 }
 
